@@ -13,15 +13,25 @@ echo 'Done.'
 echo ''
 
 # Cleanup
-rm -rf dist es esm
+rm -rf dist esm cjs es
 
-echo 'Compile JS...'
+# Builds
+
+echo 'Compile Dist JS bundles...'
+# Rolup adds the banner file for us
 rollup -c scripts/rollup.config.js
 echo 'Done.'
 echo ''
 
 echo 'Build ESM modules...'
 NODE_ENV=esm babel src --out-dir esm --ignore 'src/**/*.spec.js'
+rm -f esm/legacy-es.js esm/browser.js
+echo "${BV_BANNER}" | cat - esm/index.js > esm/tmp.js && mv -f esm/tmp.js esm/index.js
+echo 'Done.'
+echo ''
+
+echo 'Build CJS modules...'
+NODE_ENV=cjs babel src --out-dir cjs --ignore 'src/**/*.spec.js'
 rm -f esm/legacy-es.js esm/browser.js
 echo "${BV_BANNER}" | cat - esm/index.js > esm/tmp.js && mv -f esm/tmp.js esm/index.js
 echo 'Done.'
@@ -77,28 +87,34 @@ cleancss --level 1 \
 echo 'Done.'
 echo ''
 
-echo 'Copying types from src/ to esm/ ...'
+# Copy types to modular build dirs
+#
 # There must be a better way to do this
 #
-# The following does not preserve the paths
+# Getting babel to copy files works, but it doesn't respect
+# the ignore option for copied files
+#
+# The following does not preserve the paths when copying
 #   shopt -s globstar
 #   cp src/**/*.d.ts es
 #
-# So we resort to a find with exec
+# So we resort to a find with -exec
+
+echo 'Copying types to esm/ ...'
 cd src
 find . -type f -name '*.d.ts' -exec cp {} ../esm/{} ';'
 cd ..
 echo 'Done.'
 echo ''
 
-echo 'Copying types from src/ to es/ ...'
-# There must be a better way to do this
-#
-# The following does not preserve the paths
-#   shopt -s globstar
-#   cp src/**/*.d.ts es
-#
-# So we resort to a find with exec
+echo 'Copying types to cjs/ ...'
+cd src
+find . -type f -name '*.d.ts' -exec cp {} ../cjs/{} ';'
+cd ..
+echo 'Done.'
+echo ''
+
+echo 'Copying types to es/ (deprecated)...'
 cd src
 find . -type f -name '*.d.ts' -exec cp {} ../es/{} ';'
 cd ..
