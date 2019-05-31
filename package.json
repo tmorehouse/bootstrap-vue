@@ -2,8 +2,8 @@
   "name": "bootstrap-vue",
   "version": "2.0.0-rc.21",
   "description": "BootstrapVue, with over 40 plugins and more than 75 custom components, provides one of the most comprehensive implementations of Bootstrap 4 components and grid system for Vue.js. With extensive and automated WAI-ARIA accessibility markup.",
-  "main": "dist/bootstrap-vue.common.js",
   "web": "dist/bootstrap-vue.js",
+  "main": "cjs/index.js",
   "module": "esm/index.js",
   "jsnext:main": "esm/index.js",
   "source": "src/index.js",
@@ -47,6 +47,7 @@
     "dist",
     "nuxt",
     "esm",
+    "cjs",
     "es",
     "types"
   ],
