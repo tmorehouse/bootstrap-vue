@@ -2,6 +2,7 @@
 dist/
 docs-dist/
 esm/
+cjs/
 es/
 node_modules/
 nuxt/plugin.*.js
