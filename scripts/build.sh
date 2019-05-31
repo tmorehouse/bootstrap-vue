@@ -51,11 +51,13 @@ terser dist/bootstrap-vue.js \
        --mangle --comments "/^!/" \
        --source-map "content=dist/bootstrap-vue.js.map,includeSources,url=bootstrap-vue.min.js.map" \
        --output dist/bootstrap-vue.min.js
+
 terser dist/bootstrap-vue.common.js \
        --compress typeofs=false \
        --mangle --comments "/^!/" \
        --source-map "content=dist/bootstrap-vue.common.js.map,includeSources,url=bootstrap-vue.common.min.js.map" \
        --output dist/bootstrap-vue.common.min.js
+
 terser dist/bootstrap-vue.esm.js \
        --compress typeofs=false \
        --mangle \
@@ -92,11 +94,11 @@ echo ''
 # There must be a better way to do this
 #
 # Getting babel to copy files works, but it doesn't respect
-# the ignore option for copied files
+# the ignore option for copied files so it copys tests as well
 #
 # The following does not preserve the paths when copying
 #   shopt -s globstar
-#   cp src/**/*.d.ts es
+#   cp src/**/*.d.ts esm
 #
 # So we resort to a find with -exec
 
